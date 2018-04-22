@@ -7,20 +7,20 @@
 #
 
 IF(RAPTOR_PARSER_RDFA)
-	INCLUDE_DIRECTORIES(BEFORE ${CMAKE_SOURCE_DIR}/librdfa)
+	INCLUDE_DIRECTORIES(BEFORE ${CMAKE_CURRENT_LIST_DIR}/../librdfa)
 ENDIF(RAPTOR_PARSER_RDFA)
 
 # ** Parser sources **
 
 # XML parser enabled
 IF(RAPTOR_PARSER_RDFXML)
-	SET(raptor_parser_rdfxml_sources raptor_rdfxml.c)
+	SET(raptor_parser_rdfxml_sources ${CMAKE_CURRENT_LIST_DIR}/raptor_rdfxml.c)
 	SET(raptor_libxml_libs ${LIBXML2_LIBRARIES})
 ENDIF(RAPTOR_PARSER_RDFXML)
 
 # N triples parser enabled
 IF(RAPTOR_PARSER_NTRIPLES OR RAPTOR_PARSER_NQUADS)
-	SET(raptor_parser_ntriples_nquads_sources ntriples_parse.c raptor_ntriples.c)
+	SET(raptor_parser_ntriples_nquads_sources ${CMAKE_CURRENT_LIST_DIR}/ntriples_parse.c ${CMAKE_CURRENT_LIST_DIR}/raptor_ntriples.c)
 ENDIF(RAPTOR_PARSER_NTRIPLES OR RAPTOR_PARSER_NQUADS)
 
 # Turtle parser enabled
@@ -41,7 +41,7 @@ IF(RAPTOR_PARSER_TURTLE OR RAPTOR_PARSER_TRIG)
 
   ADD_CUSTOM_TARGET(turtle_parser_tgt DEPENDS turtle_tables_tgt ${CMAKE_CURRENT_BINARY_DIR}/turtle_parser.c ${CMAKE_CURRENT_BINARY_DIR}/turtle_parser.h)
   ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/turtle_parser.c
-    COMMAND ${PERL_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/fix-bison.pl ${CMAKE_CURRENT_BINARY_DIR}/turtle_parser.tab.c > ${CMAKE_CURRENT_BINARY_DIR}/turtle_parser.c
+    COMMAND ${PERL_EXECUTABLE} ${CMAKE_CURRENT_LIST_DIR}/../scripts/fix-bison.pl ${CMAKE_CURRENT_BINARY_DIR}/turtle_parser.tab.c > ${CMAKE_CURRENT_BINARY_DIR}/turtle_parser.c
     DEPENDS turtle_tables_tgt)
   ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/turtle_parser.h COMMAND ${CMAKE_COMMAND} -E rename ${CMAKE_CURRENT_BINARY_DIR}/turtle_parser.tab.h ${CMAKE_CURRENT_BINARY_DIR}/turtle_parser.h)
 
@@ -53,108 +53,108 @@ IF(RAPTOR_PARSER_TURTLE OR RAPTOR_PARSER_TRIG)
 
   ADD_CUSTOM_TARGET(turtle_lexer_tgt DEPENDS turtle_flex_tgt)
   ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/turtle_lexer.c
-    COMMAND ${PERL_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/fix-flex.pl ${CMAKE_CURRENT_BINARY_DIR}/turtle_lexer.t > ${CMAKE_CURRENT_BINARY_DIR}/turtle_lexer.c
+    COMMAND ${PERL_EXECUTABLE} ${CMAKE_CURRENT_LIST_DIR}/../scripts/fix-flex.pl ${CMAKE_CURRENT_BINARY_DIR}/turtle_lexer.t > ${CMAKE_CURRENT_BINARY_DIR}/turtle_lexer.c
     DEPENDS turtle_flex_tgt)
 ENDIF(RAPTOR_PARSER_TURTLE OR RAPTOR_PARSER_TRIG)
 
 # RSS feed parser enabled
 IF(RAPTOR_PARSER_RSS OR RAPTOR_SERIALIZER_RSS_1_0)
-	SET(raptor_rss_common_sources raptor_rss_common.c raptor_rss.h)
+	SET(raptor_rss_common_sources ${CMAKE_CURRENT_LIST_DIR}/raptor_rss_common.c ${CMAKE_CURRENT_LIST_DIR}/raptor_rss.h)
 ENDIF(RAPTOR_PARSER_RSS OR RAPTOR_SERIALIZER_RSS_1_0)
 IF(RAPTOR_PARSER_RSS)
-	SET(raptor_parser_rss_sources raptor_rss.c)
+	SET(raptor_parser_rss_sources ${CMAKE_CURRENT_LIST_DIR}/raptor_rss.c)
 	SET(raptor_libxml_libs ${LIBXML2_LIBRARIES})
 ENDIF(RAPTOR_PARSER_RSS)
 
 # GRDDL parser enabled
 IF(RAPTOR_PARSER_GRDDL)
-	SET(raptor_parser_grddl_sources raptor_grddl.c)
+	SET(raptor_parser_grddl_sources ${CMAKE_CURRENT_LIST_DIR}/raptor_grddl.c)
 	SET(raptor_libxml_libs ${LIBXML2_LIBRARIES})
 	SET(raptor_libxslt_libs ${LIBXSLT_LIBRARIES})
 ENDIF(RAPTOR_PARSER_GRDDL)
 
 # Guess which parser to use based on context
 IF(RAPTOR_PARSER_GUESS)
-	SET(raptor_parser_guess_sources raptor_guess.c)
+	SET(raptor_parser_guess_sources ${CMAKE_CURRENT_LIST_DIR}/raptor_guess.c)
 ENDIF(RAPTOR_PARSER_GUESS)
 
 # RDFA parser enabled
 IF(RAPTOR_PARSER_RDFA)
-	SET(raptor_parser_rdfa_sources raptor_librdfa.c)
+	SET(raptor_parser_rdfa_sources ${CMAKE_CURRENT_LIST_DIR}/raptor_librdfa.c)
 ENDIF(RAPTOR_PARSER_RDFA)
 
 # JSON parser enabled
 IF(RAPTOR_PARSER_JSON)
-	SET(raptor_parser_json_sources raptor_json.c)
+	SET(raptor_parser_json_sources ${CMAKE_CURRENT_LIST_DIR}/raptor_json.c)
 ENDIF(RAPTOR_PARSER_JSON)
 
 # ** Serializers **
 
 IF(RAPTOR_SERIALIZER_RDFXML)
-	SET(raptor_serializer_rdfxml_sources raptor_serialize_rdfxml.c)
+	SET(raptor_serializer_rdfxml_sources ${CMAKE_CURRENT_LIST_DIR}/raptor_serialize_rdfxml.c)
 ENDIF(RAPTOR_SERIALIZER_RDFXML)
 IF(RAPTOR_SERIALIZER_NTRIPLES OR RAPTOR_SERIALIZER_NQUADS)
-	SET(raptor_serializer_ntriples_nquads_sources raptor_serialize_ntriples.c)
+	SET(raptor_serializer_ntriples_nquads_sources ${CMAKE_CURRENT_LIST_DIR}/raptor_serialize_ntriples.c)
 ENDIF(RAPTOR_SERIALIZER_NTRIPLES OR RAPTOR_SERIALIZER_NQUADS)
 IF(RAPTOR_SERIALIZER_RDFXML_ABBREV OR RAPTOR_SERIALIZER_TURTLE OR RAPTOR_SERIALIZER_MKR)
 	SET(raptor_serializer_abbrev_sources raptor_abbrev.c)
 ENDIF(RAPTOR_SERIALIZER_RDFXML_ABBREV OR RAPTOR_SERIALIZER_TURTLE OR RAPTOR_SERIALIZER_MKR)
 IF(RAPTOR_SERIALIZER_RDFXML_ABBREV)
-	SET(raptor_serializer_rdfxml_abbrev_sources raptor_serialize_rdfxmla.c)
+	SET(raptor_serializer_rdfxml_abbrev_sources ${CMAKE_CURRENT_LIST_DIR}/raptor_serialize_rdfxmla.c)
 ENDIF(RAPTOR_SERIALIZER_RDFXML_ABBREV)
 IF(RAPTOR_SERIALIZER_TURTLE OR RAPTOR_SERIALIZER_MKR)
-	SET(raptor_serializer_turtle_sources raptor_serialize_turtle.c)
+	SET(raptor_serializer_turtle_sources ${CMAKE_CURRENT_LIST_DIR}/raptor_serialize_turtle.c)
 ENDIF(RAPTOR_SERIALIZER_TURTLE OR RAPTOR_SERIALIZER_MKR)
 IF(RAPTOR_SERIALIZER_RSS_1_0)
-	SET(raptor_serializer_rss_1_0_sources raptor_serialize_rss.c)
+	SET(raptor_serializer_rss_1_0_sources ${CMAKE_CURRENT_LIST_DIR}/raptor_serialize_rss.c)
 ENDIF(RAPTOR_SERIALIZER_RSS_1_0)
 IF(RAPTOR_SERIALIZER_DOT)
-	SET(raptor_serializer_dot_sources raptor_serialize_dot.c)
+	SET(raptor_serializer_dot_sources ${CMAKE_CURRENT_LIST_DIR}/raptor_serialize_dot.c)
 ENDIF(RAPTOR_SERIALIZER_DOT)
 IF(RAPTOR_SERIALIZER_HTML)
-	SET(raptor_serializer_html_sources raptor_serialize_html.c)
+	SET(raptor_serializer_html_sources ${CMAKE_CURRENT_LIST_DIR}/raptor_serialize_html.c)
 ENDIF(RAPTOR_SERIALIZER_HTML)
 IF(RAPTOR_SERIALIZER_JSON)
-	SET(raptor_serializer_json_sources raptor_serialize_json.c)
+	SET(raptor_serializer_json_sources ${CMAKE_CURRENT_LIST_DIR}/raptor_serialize_json.c)
 	SET(raptor_yajl_libs ${YAJL_LIBRARIES})
 ENDIF(RAPTOR_SERIALIZER_JSON)
 
 IF(RAPTOR_WWW STREQUAL "curl")
-	SET(raptor_www_sources raptor_www_curl.c)
+	SET(raptor_www_sources ${CMAKE_CURRENT_LIST_DIR}/raptor_www_curl.c)
 	SET(raptor_www_libs ${CURL_LIBRARIES})
 ELSEIF(RAPTOR_WWW STREQUAL "fetch")
-	SET(raptor_www_sources raptor_www_libfetch.c)
+	SET(raptor_www_sources ${CMAKE_CURRENT_LIST_DIR}/raptor_www_libfetch.c)
 	#SET(raptor_www_libs ${FETCH_LIBRARIES})
 ELSEIF(RAPTOR_WWW STREQUAL "xml")
-	SET(raptor_www_sources raptor_www_libxml.c)
+	SET(raptor_www_sources ${CMAKE_CURRENT_LIST_DIR}/raptor_www_libxml.c)
 	SET(raptor_www_libs ${LIBXML2_LIBRARIES})
 ENDIF(RAPTOR_WWW STREQUAL "curl")
 
 IF(RAPTOR_XML STREQUAL "libxml")
-	SET(raptor_libxml_sources raptor_libxml.c)
+	SET(raptor_libxml_sources ${CMAKE_CURRENT_LIST_DIR}/raptor_libxml.c)
 	SET(raptor_libxml_libs ${LIBXML2_LIBRARIES})
 ENDIF(RAPTOR_XML STREQUAL "libxml")
 IF(RAPTOR_PARSER_RDFA)
 	SET(raptor_librdfa_sources
-		${CMAKE_SOURCE_DIR}/librdfa/context.c
-		${CMAKE_SOURCE_DIR}/librdfa/curie.c
-		${CMAKE_SOURCE_DIR}/librdfa/iri.c
-		${CMAKE_SOURCE_DIR}/librdfa/language.c
-		${CMAKE_SOURCE_DIR}/librdfa/lists.c
-		${CMAKE_SOURCE_DIR}/librdfa/namespace.c
-		${CMAKE_SOURCE_DIR}/librdfa/rdfa.c
-		${CMAKE_SOURCE_DIR}/librdfa/rdfa_utils.c
-		${CMAKE_SOURCE_DIR}/librdfa/strtok_r.c
-		${CMAKE_SOURCE_DIR}/librdfa/subject.c
-		${CMAKE_SOURCE_DIR}/librdfa/triple.c
-# 		${CMAKE_SOURCE_DIR}/librdfa/rdfa.h
-# 		${CMAKE_SOURCE_DIR}/librdfa/rdfa_utils.h
-# 		${CMAKE_SOURCE_DIR}/librdfa/strtok_r.h
+		${CMAKE_CURRENT_LIST_DIR}/../librdfa/context.c
+		${CMAKE_CURRENT_LIST_DIR}/../librdfa/curie.c
+		${CMAKE_CURRENT_LIST_DIR}/../librdfa/iri.c
+		${CMAKE_CURRENT_LIST_DIR}/../librdfa/language.c
+		${CMAKE_CURRENT_LIST_DIR}/../librdfa/lists.c
+		${CMAKE_CURRENT_LIST_DIR}/../librdfa/namespace.c
+		${CMAKE_CURRENT_LIST_DIR}/../librdfa/rdfa.c
+		${CMAKE_CURRENT_LIST_DIR}/../librdfa/rdfa_utils.c
+		${CMAKE_CURRENT_LIST_DIR}/../librdfa/strtok_r.c
+		${CMAKE_CURRENT_LIST_DIR}/../librdfa/subject.c
+		${CMAKE_CURRENT_LIST_DIR}/../librdfa/triple.c
+# 		${CMAKE_SOURCE_DIR}/../librdfa/rdfa.h
+# 		${CMAKE_SOURCE_DIR}/../librdfa/rdfa_utils.h
+# 		${CMAKE_SOURCE_DIR}/../librdfa/strtok_r.h
 	)
 ENDIF(RAPTOR_PARSER_RDFA)
 
 IF(NOT HAVE_STRCASECMP AND NOT HAVE_STRICMP)
-	SET(raptor_strcasecmp_sources strcasecmp.c)
+	SET(raptor_strcasecmp_sources ${CMAKE_CURRENT_LIST_DIR}/strcasecmp.c)
 ENDIF(NOT HAVE_STRCASECMP AND NOT HAVE_STRICMP)
 
 IF(RAPTOR_PARSEDATE)
@@ -168,7 +168,7 @@ IF(RAPTOR_PARSEDATE)
 
   ADD_CUSTOM_TARGET(parsedate_tgt DEPENDS parsedate_tables_tgt ${CMAKE_CURRENT_BINARY_DIR}/parsedate.c ${CMAKE_CURRENT_BINARY_DIR}/parsedate.h)
   ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/parsedate.c
-    COMMAND ${PERL_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/fix-bison.pl ${CMAKE_CURRENT_BINARY_DIR}/parsedate.tab.c > ${CMAKE_CURRENT_BINARY_DIR}/parsedate.c
+    COMMAND ${PERL_EXECUTABLE} ${CMAKE_CURRENT_LIST_DIR}/../scripts/fix-bison.pl ${CMAKE_CURRENT_BINARY_DIR}/parsedate.tab.c > ${CMAKE_CURRENT_BINARY_DIR}/parsedate.c
     DEPENDS parsedate_tables_tgt)
   ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/parsedate.h COMMAND ${CMAKE_COMMAND} -E rename ${CMAKE_CURRENT_BINARY_DIR}/parsedate.tab.h ${CMAKE_CURRENT_BINARY_DIR}/parsedate.h)
 ENDIF(RAPTOR_PARSEDATE)
@@ -180,37 +180,37 @@ ELSE(BUILD_SHARED_LIBS)
 ENDIF(BUILD_SHARED_LIBS)
 
 ADD_LIBRARY(raptor2 ${LIB_TYPE}
-	raptor_avltree.c
-	raptor_concepts.c
-	raptor_escaped.c
-	raptor_general.c
-	raptor_iostream.c
-	raptor_json_writer.c
-	raptor_locator.c
-	raptor_log.c
-	raptor_memstr.c
-	raptor_namespace.c
-	raptor_option.c
-	raptor_parse.c
-	raptor_qname.c
-	raptor_rfc2396.c
-	raptor_sax2.c
-	raptor_sequence.c
-	raptor_serialize.c
-	raptor_set.c
-	raptor_statement.c
-	raptor_stringbuffer.c
-	raptor_syntax_description.c
-	raptor_term.c
-	raptor_turtle_writer.c
-	raptor_unicode.c
-	raptor_uri.c
-	raptor_www.c
-	raptor_xml.c
-	raptor_xml_writer.c
-	snprintf.c
-	sort_r.c
-	turtle_common.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_avltree.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_concepts.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_escaped.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_general.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_iostream.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_json_writer.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_locator.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_log.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_memstr.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_namespace.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_option.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_parse.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_qname.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_rfc2396.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_sax2.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_sequence.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_serialize.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_set.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_statement.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_stringbuffer.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_syntax_description.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_term.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_turtle_writer.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_unicode.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_uri.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_www.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_xml.c
+	${CMAKE_CURRENT_LIST_DIR}/raptor_xml_writer.c
+	${CMAKE_CURRENT_LIST_DIR}/snprintf.c
+	${CMAKE_CURRENT_LIST_DIR}/sort_r.c
+	${CMAKE_CURRENT_LIST_DIR}/turtle_common.c
 	${raptor_parser_rdfxml_sources}
 	${raptor_parser_ntriples_nquads_sources}
 	${raptor_parser_turtle_trig_sources}
@@ -255,159 +255,159 @@ SET_TARGET_PROPERTIES(
 	COMPILE_DEFINITIONS "LIBRDFA_IN_RAPTOR;RAPTOR_INTERNAL;${LIBXML2_DEFINITIONS};${LIBXSLT_DEFINITIONS}"
 )
 
-ADD_EXECUTABLE(turtle_lexer_test turtle_lexer.c)
-TARGET_LINK_LIBRARIES(turtle_lexer_test raptor2)
+#ADD_EXECUTABLE(turtle_lexer_test ${CMAKE_CURRENT_BINARY_DIR}/turtle_lexer.c)
+#TARGET_LINK_LIBRARIES(turtle_lexer_test raptor2)
 
-IF(NOT WIN32 OR NOT BUILD_SHARED_LIBS)
-	# This currently cannot be built on Windows with DLL linkage
-	ADD_EXECUTABLE(turtle_parser_test turtle_parser.c)
-	TARGET_LINK_LIBRARIES(turtle_parser_test raptor2)
-	SET_TARGET_PROPERTIES(
-		turtle_parser_test
-		PROPERTIES
-		COMPILE_DEFINITIONS "RAPTOR_INTERNAL;STANDALONE"
-	)
-ENDIF(NOT WIN32 OR NOT BUILD_SHARED_LIBS)
+#IF(NOT WIN32 OR NOT BUILD_SHARED_LIBS)
+#	# This currently cannot be built on Windows with DLL linkage
+#	ADD_EXECUTABLE(turtle_parser_test ${CMAKE_CURRENT_LIST_DIR}/turtle_parser.c)
+#	TARGET_LINK_LIBRARIES(turtle_parser_test raptor2)
+#	SET_TARGET_PROPERTIES(
+#		turtle_parser_test
+#		PROPERTIES
+#		COMPILE_DEFINITIONS "RAPTOR_INTERNAL;STANDALONE"
+#	)
+#ENDIF(NOT WIN32 OR NOT BUILD_SHARED_LIBS)
 
-ADD_EXECUTABLE(raptor_parse_test raptor_parse.c)
-TARGET_LINK_LIBRARIES(raptor_parse_test raptor2)
-ADD_TEST(raptor_parse_test raptor_parse_test)
+#ADD_EXECUTABLE(raptor_parse_test ${CMAKE_CURRENT_LIST_DIR}/raptor_parse.c)
+#TARGET_LINK_LIBRARIES(raptor_parse_test raptor2)
+#ADD_TEST(raptor_parse_test raptor_parse_test)
 
-ADD_EXECUTABLE(raptor_rfc2396_test raptor_rfc2396.c)
-TARGET_LINK_LIBRARIES(raptor_rfc2396_test raptor2)
-ADD_TEST(raptor_rfc2396_test raptor_rfc2396_test)
+#ADD_EXECUTABLE(raptor_rfc2396_test ${CMAKE_CURRENT_LIST_DIR}/raptor_rfc2396.c)
+#TARGET_LINK_LIBRARIES(raptor_rfc2396_test raptor2)
+#ADD_TEST(raptor_rfc2396_test raptor_rfc2396_test)
 
-ADD_EXECUTABLE(raptor_uri_test raptor_uri.c)
-TARGET_LINK_LIBRARIES(raptor_uri_test raptor2)
-ADD_TEST(raptor_uri_test raptor_uri_test)
+#ADD_EXECUTABLE(raptor_uri_test ${CMAKE_CURRENT_LIST_DIR}/raptor_uri.c)
+#TARGET_LINK_LIBRARIES(raptor_uri_test raptor2)
+#ADD_TEST(raptor_uri_test raptor_uri_test)
 
-ADD_EXECUTABLE(raptor_namespace_test raptor_namespace.c)
-TARGET_LINK_LIBRARIES(raptor_namespace_test raptor2)
-ADD_TEST(raptor_namespace_test raptor_namespace_test)
+#ADD_EXECUTABLE(raptor_namespace_test ${CMAKE_CURRENT_LIST_DIR}/raptor_namespace.c)
+#TARGET_LINK_LIBRARIES(raptor_namespace_test raptor2)
+#ADD_TEST(raptor_namespace_test raptor_namespace_test)
 
-ADD_EXECUTABLE(strcasecmp_test strcasecmp.c)
-TARGET_LINK_LIBRARIES(strcasecmp_test raptor2)
-ADD_TEST(strcasecmp_test strcasecmp_test)
+#ADD_EXECUTABLE(strcasecmp_test ${CMAKE_CURRENT_LIST_DIR}/strcasecmp.c)
+#TARGET_LINK_LIBRARIES(strcasecmp_test raptor2)
+#ADD_TEST(strcasecmp_test strcasecmp_test)
 
-ADD_EXECUTABLE(raptor_www_test raptor_www_test.c)
-TARGET_LINK_LIBRARIES(raptor_www_test raptor2)
-ADD_TEST(raptor_www_test raptor_www_test)
+#ADD_EXECUTABLE(raptor_www_test ${CMAKE_CURRENT_LIST_DIR}/raptor_www_test.c)
+#TARGET_LINK_LIBRARIES(raptor_www_test raptor2)
+#ADD_TEST(raptor_www_test raptor_www_test)
 
-ADD_EXECUTABLE(raptor_sequence_test raptor_sequence.c)
-TARGET_LINK_LIBRARIES(raptor_sequence_test raptor2)
-ADD_TEST(raptor_sequence_test raptor_sequence_test)
+#ADD_EXECUTABLE(raptor_sequence_test ${CMAKE_CURRENT_LIST_DIR}/raptor_sequence.c)
+#TARGET_LINK_LIBRARIES(raptor_sequence_test raptor2)
+#ADD_TEST(raptor_sequence_test raptor_sequence_test)
 
-ADD_EXECUTABLE(raptor_stringbuffer_test raptor_stringbuffer.c)
-TARGET_LINK_LIBRARIES(raptor_stringbuffer_test raptor2)
-ADD_TEST(raptor_stringbuffer_test raptor_stringbuffer_test)
+#ADD_EXECUTABLE(raptor_stringbuffer_test ${CMAKE_CURRENT_LIST_DIR}/raptor_stringbuffer.c)
+#TARGET_LINK_LIBRARIES(raptor_stringbuffer_test raptor2)
+#ADD_TEST(raptor_stringbuffer_test raptor_stringbuffer_test)
 
-ADD_EXECUTABLE(raptor_iostream_test raptor_iostream.c)
-TARGET_LINK_LIBRARIES(raptor_iostream_test raptor2)
-ADD_TEST(raptor_iostream_test raptor_iostream_test)
+#ADD_EXECUTABLE(raptor_iostream_test ${CMAKE_CURRENT_LIST_DIR}/raptor_iostream.c)
+#TARGET_LINK_LIBRARIES(raptor_iostream_test raptor2)
+#ADD_TEST(raptor_iostream_test raptor_iostream_test)
 
-ADD_EXECUTABLE(raptor_xml_writer_test raptor_xml_writer.c)
-TARGET_LINK_LIBRARIES(raptor_xml_writer_test raptor2)
-ADD_TEST(raptor_xml_writer_test raptor_xml_writer_test)
+#ADD_EXECUTABLE(raptor_xml_writer_test ${CMAKE_CURRENT_LIST_DIR}/raptor_xml_writer.c)
+#TARGET_LINK_LIBRARIES(raptor_xml_writer_test raptor2)
+#ADD_TEST(raptor_xml_writer_test raptor_xml_writer_test)
 
-ADD_EXECUTABLE(raptor_turtle_writer_test raptor_turtle_writer.c)
-TARGET_LINK_LIBRARIES(raptor_turtle_writer_test raptor2)
-ADD_TEST(raptor_turtle_writer_test raptor_turtle_writer_test)
+#ADD_EXECUTABLE(raptor_turtle_writer_test ${CMAKE_CURRENT_LIST_DIR}/raptor_turtle_writer.c)
+#TARGET_LINK_LIBRARIES(raptor_turtle_writer_test raptor2)
+#ADD_TEST(raptor_turtle_writer_test raptor_turtle_writer_test)
 
-ADD_EXECUTABLE(raptor_avltree_test raptor_avltree.c)
-TARGET_LINK_LIBRARIES(raptor_avltree_test raptor2)
-ADD_TEST(raptor_avltree_test raptor_avltree_test)
+#ADD_EXECUTABLE(raptor_avltree_test ${CMAKE_CURRENT_LIST_DIR}/raptor_avltree.c)
+#TARGET_LINK_LIBRARIES(raptor_avltree_test raptor2)
+#ADD_TEST(raptor_avltree_test raptor_avltree_test)
 
-ADD_EXECUTABLE(raptor_term_test raptor_term.c)
-TARGET_LINK_LIBRARIES(raptor_term_test raptor2)
-ADD_TEST(raptor_term_test raptor_term_test)
+#ADD_EXECUTABLE(raptor_term_test ${CMAKE_CURRENT_LIST_DIR}/raptor_term.c)
+#TARGET_LINK_LIBRARIES(raptor_term_test raptor2)
+#ADD_TEST(raptor_term_test raptor_term_test)
 
-ADD_EXECUTABLE(raptor_permute_test raptor_permute_test.c)
-TARGET_LINK_LIBRARIES(raptor_permute_test raptor2)
-ADD_TEST(raptor_permute_test raptor_permute_test)
+#ADD_EXECUTABLE(raptor_permute_test ${CMAKE_CURRENT_LIST_DIR}/raptor_permute_test.c)
+#TARGET_LINK_LIBRARIES(raptor_permute_test raptor2)
+#ADD_TEST(raptor_permute_test raptor_permute_test)
 
-ADD_EXECUTABLE(raptor_snprintf_test snprintf.c)
-TARGET_LINK_LIBRARIES(raptor_snprintf_test raptor2)
-ADD_TEST(raptor_snprintf_test raptor_snprintf_test)
+#ADD_EXECUTABLE(raptor_snprintf_test ${CMAKE_CURRENT_LIST_DIR}/snprintf.c)
+#TARGET_LINK_LIBRARIES(raptor_snprintf_test raptor2)
+#ADD_TEST(raptor_snprintf_test raptor_snprintf_test)
 
-ADD_EXECUTABLE(raptor_sort_r_test sort_r.c)
-TARGET_LINK_LIBRARIES(raptor_sort_r_test raptor2)
-ADD_TEST(raptor_sort_r_test raptor_sort_r_test)
+#ADD_EXECUTABLE(raptor_sort_r_test ${CMAKE_CURRENT_LIST_DIR}/sort_r.c)
+#TARGET_LINK_LIBRARIES(raptor_sort_r_test raptor2)
+#ADD_TEST(raptor_sort_r_test raptor_sort_r_test)
 
-SET_TARGET_PROPERTIES(
-	turtle_lexer_test
-	#turtle_parser_test
-	raptor_parse_test
-	raptor_rfc2396_test
-	raptor_uri_test
-	raptor_namespace_test
-	strcasecmp_test
-	raptor_www_test
-	raptor_sequence_test
-	raptor_stringbuffer_test
-	raptor_iostream_test
-	raptor_xml_writer_test
-	raptor_turtle_writer_test
-	raptor_avltree_test
-	raptor_term_test
-	raptor_permute_test
-	raptor_snprintf_test
-	raptor_sort_r_test
-	PROPERTIES
-	COMPILE_DEFINITIONS "RAPTOR_INTERNAL;STANDALONE"
-)
+#SET_TARGET_PROPERTIES(
+#	turtle_lexer_test
+#	#turtle_parser_test
+#	raptor_parse_test
+#	raptor_rfc2396_test
+#	raptor_uri_test
+#	raptor_namespace_test
+#	strcasecmp_test
+#	raptor_www_test
+#	raptor_sequence_test
+#	raptor_stringbuffer_test
+#	raptor_iostream_test
+#	raptor_xml_writer_test
+#	raptor_turtle_writer_test
+#	raptor_avltree_test
+#	raptor_term_test
+#	raptor_permute_test
+#	raptor_snprintf_test
+#	raptor_sort_r_test
+#	PROPERTIES
+#	COMPILE_DEFINITIONS "RAPTOR_INTERNAL;STANDALONE"
+#)
 
-IF(RAPTOR_PARSER_RDFXML)
-	ADD_EXECUTABLE(raptor_set_test raptor_set.c)
-	TARGET_LINK_LIBRARIES(raptor_set_test raptor2)
-	ADD_TEST(raptor_set_test raptor_set_test)
+#IF(RAPTOR_PARSER_RDFXML)
+#	ADD_EXECUTABLE(raptor_set_test ${CMAKE_CURRENT_LIST_DIR}/raptor_set.c)
+#	TARGET_LINK_LIBRARIES(raptor_set_test raptor2)
+#	ADD_TEST(raptor_set_test raptor_set_test)
 
-	ADD_EXECUTABLE(raptor_xml_test raptor_xml.c)
-	TARGET_LINK_LIBRARIES(raptor_xml_test raptor2)
-	ADD_TEST(raptor_xml_test raptor_xml_test)
+#	ADD_EXECUTABLE(raptor_xml_test ${CMAKE_CURRENT_LIST_DIR}/raptor_xml.c)
+#	TARGET_LINK_LIBRARIES(raptor_xml_test raptor2)
+#	ADD_TEST(raptor_xml_test raptor_xml_test)
 
-	SET_TARGET_PROPERTIES(
-		raptor_set_test
-		raptor_xml_test
-		PROPERTIES
-		COMPILE_DEFINITIONS "RAPTOR_INTERNAL;STANDALONE"
-	)
-ENDIF(RAPTOR_PARSER_RDFXML)
+#	SET_TARGET_PROPERTIES(
+#		raptor_set_test
+#		raptor_xml_test
+#		PROPERTIES
+#		COMPILE_DEFINITIONS "RAPTOR_INTERNAL;STANDALONE"
+#	)
+#ENDIF(RAPTOR_PARSER_RDFXML)
 
 # Generate pkg-config metadata file
 #
-FILE(WRITE ${CMAKE_CURRENT_BINARY_DIR}/raptor2.pc
-"prefix=${CMAKE_INSTALL_PREFIX}
-exec_prefix=\${prefix}
-libdir=\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}
-includedir=\${prefix}/${CMAKE_INSTALL_INCLUDEDIR}/raptor2
+#FILE(WRITE ${CMAKE_CURRENT_BINARY_DIR}/raptor2.pc
+#"prefix=${CMAKE_INSTALL_PREFIX}
+#exec_prefix=\${prefix}
+#libdir=\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}
+#includedir=\${prefix}/${CMAKE_INSTALL_INCLUDEDIR}/raptor2
 
-Name: Raptor RDF Parsing Library
-Description: RDF Parser Toolkit Library
-Version: ${VERSION}
-Libs: -L\${libdir} -lraptor2
-Libs.private: ${raptor_libxslt_libs} ${raptor_libxml_libs}
-Cflags: -I\${includedir}
-")
+#Name: Raptor RDF Parsing Library
+#Description: RDF Parser Toolkit Library
+#Version: ${VERSION}
+#Libs: -L\${libdir} -lraptor2
+#Libs.private: ${raptor_libxslt_libs} ${raptor_libxml_libs}
+#Cflags: -I\${includedir}
+#")
 
-INSTALL(FILES
-	raptor.h
-	${CMAKE_CURRENT_BINARY_DIR}/raptor2.h
-	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/raptor2
-)
+#INSTALL(FILES
+#	raptor.h
+#	${CMAKE_CURRENT_BINARY_DIR}/raptor2.h
+#	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/raptor2
+#)
 
-INSTALL(FILES
-	${CMAKE_CURRENT_BINARY_DIR}/raptor2.pc
-	DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
-)
+#INSTALL(FILES
+#	${CMAKE_CURRENT_BINARY_DIR}/raptor2.pc
+#	DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
+#)
 
-INSTALL(
-	TARGETS raptor2
-	EXPORT  Raptor2Config
-	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
+#INSTALL(
+#	TARGETS raptor2
+#	EXPORT  Raptor2Config
+#	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+#)
 
-INSTALL(EXPORT Raptor2Config DESTINATION  ${CMAKE_INSTALL_LIBDIR}/cmake)
+#INSTALL(EXPORT Raptor2Config DESTINATION  ${CMAKE_INSTALL_LIBDIR}/cmake)
 
 # end raptor/src/CMakeLists.txt

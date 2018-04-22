@@ -332,7 +332,7 @@ IF(CMAKE_GENERATOR MATCHES "Makefiles")
 ENDIF(CMAKE_GENERATOR MATCHES "Makefiles")
 
 SUBDIRS(src)
-SUBDIRS(utils)
+# SUBDIRS(utils)
 
 ################################################################
 
